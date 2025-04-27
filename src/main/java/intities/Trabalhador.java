@@ -3,26 +3,53 @@ package intities;
 import ENUMS.Nivel;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Trabalhador {
-    public Departamento departamento;
-    public LocalDate entrada;
-    public String nome;
-    public Nivel nivel;
-    public float salarioBase;
-    public List<Contratos> contratos;
+    private String nome;
+    private Nivel nivel;
+    private double salarioBase;
+
+    private Departamento departamento;
+    private List<Contratos> contratos = new ArrayList<>();
 
     public Trabalhador() {
     }
 
-    public Trabalhador(Departamento departamento, LocalDate entrada, String nome, Nivel nivel, float salarioBase, List<Contratos> contratos) {
-        this.departamento = departamento;
-        this.entrada = entrada;
+    public Trabalhador(String nome, Nivel nivel, double salarioBase, Departamento departamento) {
         this.nome = nome;
         this.nivel = nivel;
         this.salarioBase = salarioBase;
-        this.contratos = contratos;
+        this.departamento = departamento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Nivel getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(Nivel nivel) {
+        this.nivel = nivel;
+    }
+
+    public double getSalarioBase() {
+        return salarioBase;
+    }
+
+    public void setSalarioBase(double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+
+    public void adicionarContrato(Contratos contrato) {
+        this.contratos.add(contrato);
     }
 
     public Departamento getDepartamento() {
@@ -37,50 +64,43 @@ public class Trabalhador {
         return contratos;
     }
 
-    public void setContratos(List<Contratos> contratos) {
-        this.contratos = contratos;
+    public void removerContrato(Contratos contrato){
+        this.contratos.remove(contrato);
     }
 
-    public LocalDate getEntrada() {
-        return entrada;
+    public double calcularRenda(int ano, int mes){
+        double soma = salarioBase;
+        soma += this.contratos.stream()
+                .filter(c -> {
+                    LocalDate data = c.getDataInicio();
+                    int tempAno = data.getYear();
+                    int tempMes = data.getMonthValue();
+                    System.out.println("Ano: " + tempAno + ", Mês: " + tempMes);
+                    System.out.println("Ano: " + ano + ", Mes: " + mes);
+                    return  tempAno == ano && tempMes == mes ;
+                })
+                .map(c -> {
+                    double valor = c.valorTotal();
+                    System.out.println("Valor do contrato: " + valor);
+                    return valor;
+                })
+                .reduce(0.0, (a, b) -> {
+                    System.out.println("Somando: " + a + " + " + b);
+                    return a + b;
+                });
+
+        return soma;
     }
 
-    public void setEntrada(LocalDate entrada) {
-        this.entrada = entrada;
+    @Override
+    public String toString() {
+        return "Trabalhador{" +
+                "contratos=" + contratos +
+                ", nome='" + nome + '\'' +
+                ", nivel=" + nivel +
+                ", salarioBase=" + salarioBase +
+                ", departamento=" + departamento +
+                '}';
     }
-
-    public Nivel getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public float getSalarioBase() {
-        return salarioBase;
-    }
-
-    public void setSalarioBase(float salarioBase) {
-        this.salarioBase = salarioBase;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void adicionarContrato(Contratos contratos){
-        this.contratos.add(contratos);
-    }
-
-    public void removerContrato(Contratos contratos){
-        this.contratos.remove(contratos);
-    }
-
-
 }
 

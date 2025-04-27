@@ -5,12 +5,12 @@ import java.time.LocalDate;
 
 public class Contratos {
     public LocalDate dataInicio;
-    public Double valorHora;
+    public double valorHora;
     public Integer horas;
 
     public Contratos() {}
 
-    public Contratos(LocalDate dataInicio, Double valorHora, Integer horas) {
+    public Contratos(LocalDate dataInicio, double valorHora, Integer horas) {
         this.dataInicio = dataInicio;
         this.valorHora = valorHora;
         this.horas = horas;
@@ -24,7 +24,7 @@ public class Contratos {
         this.dataInicio = dataInicio;
     }
 
-    public Double getValorHora() {
+    public double getValorHora() {
         return valorHora;
     }
 
@@ -38,5 +38,9 @@ public class Contratos {
 
     public void setHoras(Integer horas) {
         this.horas = horas;
+    }
+
+    public double valorTotal(){
+        return valorHora * horas;
     }
 }
